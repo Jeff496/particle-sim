@@ -30,10 +30,12 @@
 // Main code
 int main(int, char**)
 {
-    	// World size in cells. Bump to 1920x1080 for the benchmark.
-	const int W = 480;
-	const int H = 270;
-	int zoom = 3; // screen pixels per cell
+	// resolutions
+	// const int W = 480; const int H = 270; // 270p
+	const int W = 640; const int H = 360; // 360p - official game resolution maybe?
+	// const int W = 854; const int H = 480; // 480p
+	// const int W = 1280; const int H = 720; // 720p
+	int zoom = 2; // screen pixels per cell
 
 	if (!SDL_Init(SDL_INIT_VIDEO)) {
 		std::fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
@@ -41,7 +43,7 @@ int main(int, char**)
 	}
 	SDL_Window *window = nullptr;
 	SDL_Renderer *renderer = nullptr;
-	if (!SDL_CreateWindowAndRenderer("Aulara playground", W * 4, H * 4, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+	if (!SDL_CreateWindowAndRenderer("Aulara playground", W * zoom, H * zoom, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
 		std::fprintf(stderr, "SDL_CreateWindowAndRenderer failed: %s\n", SDL_GetError());
 		return 1;
 	}

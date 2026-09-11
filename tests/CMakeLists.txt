@@ -7,6 +7,9 @@ FetchContent_Declare(doctest
   SYSTEM EXCLUDE_FROM_ALL)
 FetchContent_MakeAvailable(doctest)
 
-add_executable(sim_tests world_tests.cpp)
+add_executable(sim_tests
+  world_tests.cpp
+  determinism_tests.cpp
+)
 target_link_libraries(sim_tests PRIVATE aulara_sim doctest::doctest)
 add_test(NAME sim_tests COMMAND sim_tests)

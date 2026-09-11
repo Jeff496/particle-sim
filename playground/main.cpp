@@ -99,7 +99,7 @@ int main(int, char**)
 					for (int dx = -brush_radius; dx <= brush_radius; ++dx) {
 						const int x = cx + dx, y = cy + dy;
 						if (dx * dx + dy * dy <= brush_radius * brush_radius && x >= 0 && x < W && y >= 0 && y < H) {
-							world.set_cell(x, y, static_cast<aulara::Material>(brush_material));
+							world.set_cell(x, y, static_cast<aulara::MaterialId>(brush_material));
 						}
 					}
 				}
@@ -134,7 +134,7 @@ int main(int, char**)
 		if (ImGui::Button("fill with sand (stress test)")) {
 			for (int y = 0; y < H; ++y) {
 				for (int x = 0; x < W; ++x) {
-					world.set_cell(x, y, aulara::Material::Sand);
+					world.set_cell(x, y, id(aulara::Material::Sand));
 				}
 			}
 		}

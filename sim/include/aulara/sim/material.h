@@ -18,13 +18,13 @@ struct MaterialDef {
 };
 
 class MaterialTable {
-    public:
-        MaterialTable();
-        const MaterialDef &operator[](MaterialId id) const {return defs_[id]; }
-        std::size_t size() const { return defs_.size(); };
-        MaterialId add(MaterialDef md);
-    private:
-        std::vector<MaterialDef> defs_;
+public:
+    MaterialTable();
+    const MaterialDef &operator[](MaterialId id) const {return defs_[id]; }
+    std::size_t size() const { return defs_.size(); };
+    MaterialId add(MaterialDef md);
+private:
+    std::vector<MaterialDef> defs_;
 };
 
 } // namespace aulara

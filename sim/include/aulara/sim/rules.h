@@ -9,8 +9,6 @@ public:
     bool update_liquid();
     bool update_gas();
 
-private:
-
 };
 
 } // namespace aulara

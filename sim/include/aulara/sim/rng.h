@@ -32,9 +32,10 @@ public:
     explicit Rng(std::uint64_t seed) : s_(seed ? seed : 1) {};
     std::uint64_t next() { return s_ = xorshift64(s_); }
     bool chance(std::uint8_t p_256) { return (next() >> 56) < p_256; }
-    int pick(int a, int b) { if (a > b) std::swap(a, b);
-    const std::uint64_t span = static_cast<std::uint64_t>(b - a) + 1;
-    return a + static_cast<int>(((next() >> 32) * span) >> 32);}
+    int pick(int a, int b) { 
+        if (a > b) std::swap(a, b);
+        const std::uint64_t span = static_cast<std::uint64_t>(b - a) + 1;
+        return a + static_cast<int>(((next() >> 32) * span) >> 32); }
 private:
     std::uint64_t s_;
 };

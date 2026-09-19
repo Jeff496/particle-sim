@@ -34,8 +34,11 @@ in bench.cpp: constexpr int kTimed = 20;
 
 ## Log
 
-- command for format: ./build/bench/bench/bench | sed "s/YYYY-MM-DD/$(date +%F)/;
+- command for format: 
+```sh
+./build/bench/bench/bench | sed "s/YYYY-MM-DD/$(date +%F)/;
   s/<commit>/$(git rev-parse --short HEAD)/; s|<machine>|M2 Pro 14in|"
+```
 
 | date | commit | machine | preset | scenario | ms/step |
 |---|---|---|---|---|---|

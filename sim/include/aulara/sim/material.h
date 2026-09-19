@@ -8,6 +8,15 @@ namespace aulara {
 
 struct Color { std::uint8_t r, g, b; };
 
+enum class Phase : std::uint8_t {
+    Empty = 0,
+    Static = 1,
+    Powder = 2,
+    Liquid = 3,
+    Gas = 4,
+    Particle = 5
+};
+
 struct MaterialDef {
     std::string name;
     Phase phase = Phase::Static;

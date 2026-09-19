@@ -10,6 +10,7 @@
 // Important to understand: SDL_Renderer is an _optional_ component of SDL3.
 // For a multi-platform app consider using e.g. SDL+DirectX on Windows and SDL+OpenGL on Linux/OSX.
 
+#include "aulara/sim/types.h"
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
 #include "imgui_impl_sdlrenderer3.h"
@@ -132,6 +133,8 @@ int main(int, char**)
 		ImGui::RadioButton("sand", &brush_material, static_cast<int>(aulara::Material::Sand));
 		ImGui::SameLine();
 		ImGui::RadioButton("stone", &brush_material, static_cast<int>(aulara::Material::Stone));
+		ImGui::SameLine();
+		ImGui::RadioButton("water", &brush_material, static_cast<int>(aulara::Material::Water));
 		ImGui::Checkbox("paused", &paused);
 		if (ImGui::Button("fill with sand (stress test)")) {
 			for (int y = 0; y < H; ++y) {

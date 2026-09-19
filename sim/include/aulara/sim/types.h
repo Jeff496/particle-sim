@@ -9,19 +9,11 @@ using MaterialId = std::uint8_t;
 enum class Material : MaterialId {
     Air = 0,
     Sand = 1,
-    Stone = 2
+    Stone = 2,
+    Water = 3
 };
 
 constexpr MaterialId id(Material m) {return static_cast<MaterialId>(m); }
-
-enum class Phase : std::uint8_t {
-    Empty = 0,
-    Static = 1,
-    Powder = 2,
-    Liquid = 3,
-    Gas = 4,
-    Particle = 5
-};
 
 struct Cell {
     MaterialId material = 0;

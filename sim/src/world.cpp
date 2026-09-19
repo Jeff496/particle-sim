@@ -47,6 +47,7 @@ void World::step() {
                     break;
                 }
                 case Phase::Liquid: {
+                    rules.update_liquid(world_context, x, y, mats_[c.material]);
                     break;
                 }
                 case Phase::Gas: {

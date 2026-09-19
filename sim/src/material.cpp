@@ -1,4 +1,5 @@
 #include "aulara/sim/material.h"
+#include "aulara/sim/types.h"
 #include <cassert>
 
 namespace aulara {
@@ -24,17 +25,22 @@ MaterialTable::MaterialTable() {
     stone.base_color = {110, 110, 115};
     stone.friction = 255;
 
-    const MaterialId air_ = add(std::move(air));
-    const MaterialId sand_ = add(std::move(sand));
-    const MaterialId stone_ = add(std::move(stone));
+    MaterialDef water;
+    water.name = "water";
+    water.phase = Phase::Liquid;
+    water.density = 60;
+    water.base_color = {56, 132, 207};
+    water.friction = 0;
+
+    [[maybe_unused]] const MaterialId air_ = add(std::move(air));
+    [[maybe_unused]] const MaterialId sand_ = add(std::move(sand));
+    [[maybe_unused]] const MaterialId stone_ = add(std::move(stone));
+    [[maybe_unused]] const MaterialId water_ = add(std::move(water));
 
     assert(air_ == id(Material::Air));
     assert(sand_ == id(Material::Sand));
     assert(stone_ == id(Material::Stone));
-    (void)air_;
-    (void)sand_;
-    (void)stone_; 
-
+    assert(water_ == id(Material::Water));
 }
 
 MaterialId MaterialTable::add(MaterialDef md) {

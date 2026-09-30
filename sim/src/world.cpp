@@ -37,6 +37,7 @@ void World::step() {
         for (int x = start; x != end; x += loop_step) {
             // note about reading from c: after any rule calls, c can point to a different cell so move reads to top of loop like mat_def
             Cell &c = cells_[index(x, y)];
+            if (c.material == id(aulara::Material::Air)) continue;
             const MaterialDef &mat_def = mats_[c.material];
             if (mat_def.phase == Phase::Empty) continue;
             if (mat_def.phase == Phase::Static) continue;

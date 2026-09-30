@@ -18,7 +18,7 @@ enum class Phase : std::uint8_t {
 };
 
 struct MaterialDef {
-    std::string name;
+    const char *name = "";
     Phase phase = Phase::Static;
     std::uint8_t density = 0;
     Color base_color{0, 0, 0};

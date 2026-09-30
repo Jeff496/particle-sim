@@ -33,10 +33,12 @@ int main(int, char**)
 {
 	// resolutions
 	// const int W = 480; const int H = 270; // 270p
-	const int W = 640; const int H = 360; // 360p - official game resolution maybe?
+	// const int W = 640; const int H = 360; // 360p - official game resolution maybe?
 	// const int W = 854; const int H = 480; // 480p
-	// const int W = 1280; const int H = 720; // 720p
+	// const int W = 1280; const int H = 720; // 720p - toggle display to fit
+	const int W = 1920; const int H = 1080; // 1080p - toggle display to fit
 	int zoom = 2; // screen pixels per cell
+	// int zoom = 1; // screen pixels per cell - toggle display to fit
 
 	if (!SDL_Init(SDL_INIT_VIDEO)) {
 		std::fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
@@ -44,11 +46,25 @@ int main(int, char**)
 	}
 	SDL_Window *window = nullptr;
 	SDL_Renderer *renderer = nullptr;
-	if (!SDL_CreateWindowAndRenderer("Aulara playground", W * zoom, H * zoom, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+	// A window's size is in points, not pixels. Without SDL_WINDOW_HIGH_PIXEL_DENSITY the
+	// backbuffer is one pixel per point and the compositor scales it up, so a cell can never
+	// land on a physical pixel. With the flag the backbuffer is `scale` times the point size,
+	// so ask for (W * zoom / scale) points to get exactly W * zoom pixels. scale is 2.0 on a
+	// Retina MacBook and 1.0 on a plain display, where this reduces to the old line.
+	const float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
+	const int win_w = static_cast<int>(W * zoom / scale);
+	const int win_h = static_cast<int>(H * zoom / scale);
+	// if (!SDL_CreateWindowAndRenderer("Aulara playground", W * zoom, H * zoom, SDL_WINDOW_RESIZABLE, &window, &renderer)) { // - toggle display to fit
+	if (!SDL_CreateWindowAndRenderer("Aulara playground", win_w, win_h, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY, &window, &renderer)) { // - toggle display to fit
 		std::fprintf(stderr, "SDL_CreateWindowAndRenderer failed: %s\n", SDL_GetError());
 		return 1;
 	}
 	SDL_SetRenderVSync(renderer, 1);
+
+	// Confirm the mapping: pixels should read W * zoom by H * zoom, one cell per screen pixel at zoom 1.
+	int pixel_w = 0, pixel_h = 0;
+	SDL_GetWindowSizeInPixels(window, &pixel_w, &pixel_h);
+	std::printf("window: %d x %d points, %d x %d pixels\n", win_w, win_h, pixel_w, pixel_h);
 
 	// One streaming texture the size of the grid; nearest-neighbor so cells stay crisp when scaled.
 	SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, W, H);
@@ -96,8 +112,12 @@ int main(int, char**)
 			float mx = 0, my = 0;
 			const SDL_MouseButtonFlags buttons = SDL_GetMouseState(&mx, &my);
 			if (buttons & SDL_BUTTON_LMASK) {
-				const int cx = static_cast<int>(mx) / zoom;
-				const int cy = static_cast<int>(my) / zoom;
+				// SDL_GetMouseState reports points, the render target is in backbuffer pixels:
+				// multiply by the window's pixel density to get from one to the other.
+				// const int cx = static_cast<int>(mx) / zoom; // - toggle display to fit
+				// const int cy = static_cast<int>(my) / zoom; // - toggle display to fit
+				const int cx = static_cast<int>(mx * SDL_GetWindowPixelDensity(window)) / zoom; // - toggle display to fit
+				const int cy = static_cast<int>(my * SDL_GetWindowPixelDensity(window)) / zoom; // - toggle display to fit
 				for (int dy = -brush_radius; dy <= brush_radius; ++dy) {
 					for (int dx = -brush_radius; dx <= brush_radius; ++dx) {
 						const int x = cx + dx, y = cy + dy;
@@ -140,6 +160,18 @@ int main(int, char**)
 			for (int y = 0; y < H; ++y) {
 				for (int x = 0; x < W; ++x) {
 					world.set_cell(x, y, id(aulara::Material::Sand));
+				}
+			}
+		}
+		if (ImGui::Button("bench test")) {
+			for (int y = 0; y < H/2; ++y) {
+				for (int x = 0; x < W; ++x) {
+					world.set_cell(x, y, id(aulara::Material::Sand));
+				}
+			}
+			for (int y = H/2; y < H; ++y) {
+				for (int x = 0; x < W; ++x) {
+					world.set_cell(x, y, id(aulara::Material::Stone));
 				}
 			}
 		}

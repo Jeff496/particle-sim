@@ -49,3 +49,7 @@ in bench.cpp: constexpr int kTimed = 20;
 | 2026-09-11 | ee261dc | M2 Pro 14in | release | empty | 1.321 |
 | 2026-09-11 | ee261dc | M2 Pro 14in | release | settled | 7.779 |
 | 2026-09-11 | ee261dc | M2 Pro 14in | release | falling | 3.892 |
+
+| 2026-09-30 | 31d0e9b | M2 Pro 14in | release | empty | 0.022 |
+| 2026-09-30 | 31d0e9b | M2 Pro 14in | release | settled | 0.023|
+| 2026-09-30 | 31d0e9b | M2 Pro 14in | release | falling | 4.603 |

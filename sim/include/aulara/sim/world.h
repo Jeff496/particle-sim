@@ -16,6 +16,7 @@ public:
     int width() const { return width_; }
     int height() const { return height_; }
     std::uint64_t frame() const { return frame_; }
+    int chunks_scanned() const { return chunks_scanned_; }
 
     void step();
 
@@ -40,6 +41,8 @@ private:
     std::uint64_t seed_;
     MaterialTable mats_;
     std::vector<Cell> cells_;
+    ChunkGrid chunks_;
+    int chunks_scanned_ = 0;
 };
 
 } // namespace aulara
